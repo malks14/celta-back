@@ -1,25 +1,23 @@
 const express = require('express');
+const bodyParser = require('body-parser')
 
-
-const errorController = require('./controllers/error');
-const sequelize = require('./util/database');
-
+const regionRoutes = require('./routes/region')
 const userRoutes  = require('./routes/user')
-
 const app = express();
+app.use(bodyParser.json()); 
 
 
-app.use('/users', userRoutes);
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Content-Type"
+  );
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST");
 
-app.use(errorController.get404);
+  next();
+});
+app.use('/api', regionRoutes)
+app.use('/users', userRoutes)
 
-
-sequelize
-  // .sync({ force: true })
-  .sync()
-  .then(() => {
-    app.listen(3000);
-  })
-  .catch(err => {
-    console.log(err);
-  });
+app.listen(3000)
