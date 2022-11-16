@@ -1,8 +1,13 @@
-const Sequelize = require('sequelize');
 
-const sequelize = new Sequelize('celta', 'root', '123456', {
-  dialect: 'mysql',
-  host: 'localhost'
+const mysql = require('mysql2');
+
+const connection = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    database: 'celtadb',
+    password: 'slipknot1'
 });
 
-module.exports = sequelize;
+module.exports = connection.promise()
+
+
